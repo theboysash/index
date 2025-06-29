@@ -17,7 +17,7 @@ export default function TaskForm() {
     e.preventDefault();
     await addTask({
       title,
-      
+      userId: "test-user",
       dueDate: dueDate ? Timestamp.fromDate(new Date(dueDate)) : undefined,
       importance,
       estimatedTime: estTime,

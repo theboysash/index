@@ -1,14 +1,15 @@
-import TaskForm  from "./components/taskForm";
-import TaskList  from "./components/taskList";
+// src/App.tsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./HomePage";
 
 function App() {
   return (
-    <div className="p-4">
-      <h1>Index MVP</h1>
-      <TaskForm />
-      <hr />
-      <TaskList />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        {/* future routes: once-off, study, habit, chore */}
+      </Routes>
+    </BrowserRouter>
   );
 }
 export default App;

@@ -1,0 +1,113 @@
+/* src/HomePage.css */
+/* Center the card column */
+.task-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;      /* center cards horizontally */
+  width: 100%;
+}
+
+
+.vertical-card {
+  border-radius: 200px;
+  color: white;
+  overflow: hidden;
+  width: 700px;
+  height: 100px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+  display: flex;                 /* ensure header + footer split */
+  flex-direction: column;
+
+  justify-content: space-between;
+  text-align: center;            /* center text */
+}
+
+.vertical-card:hover {
+  transform: translateY(-4px);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;       /* center icon+title horizontally */
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.card-icon {
+  font-size: 1.5rem;
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.card-footer {
+  background: rgba(255,255,255,0.1);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+/* Gradient variants */
+.gradient-0 {
+  background: linear-gradient(90deg, #8b5cf6, #ec4899);
+}
+.gradient-1 {
+  background: linear-gradient(90deg, #0ea5e9, #3b82f6);
+}
+.gradient-2 {
+  background: linear-gradient(90deg, #22c55e, #10b981);
+}
+
+/* Flip card styles */
+.category-flip-cards {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.flip-card {
+  background-color: transparent;
+  width: 190px;
+  height: 254px;
+  perspective: 1000px;
+  font-family: sans-serif;
+}
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+  box-shadow: 0 8px 14px rgba(0,0,0,0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border: 1px solid coral;
+  border-radius: 1rem;
+}
+.flip-card-front {
+  background: linear-gradient(120deg, #dcb292 60%, #ffe7de 88%, #ffd3c3 40%, rgba(255,127,80,0.6) 48%);
+  color: coral;
+}
+.flip-card-back {
+  background: linear-gradient(120deg, #ffae91 30%, coral 88%, bisque 40%, #ffb9a0 78%);
+  color: white;
+  transform: rotateY(180deg);
+}
+.front-icon { font-size: 3rem; margin-bottom: 1rem; }
+.front-icon svg, .flip-card-front svg { fill: white; }

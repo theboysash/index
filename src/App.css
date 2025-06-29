@@ -1,3 +1,53 @@
-.task-form { display: grid; gap: .5rem; margin-bottom: 1rem; }
-.task-list { list-style: none; padding: 0; }
-.task-card { border: 1px solid #ddd; padding: 1rem; margin-bottom: .5rem; border-radius: 4px; }
+/* Priority cards container */
+.cards {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+/* Color variants */
+.cards .red    { background-color: #f43f5e; }
+.cards .blue   { background-color: #3b82f6; }
+.cards .green  { background-color: #22c55e; }
+
+/* Common card styles */
+.cards .card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 120px;
+  width: 200px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: transform 400ms, filter 400ms;
+}
+
+/* Title text */
+.cards .card p.tip {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Subtitle text */
+.cards .card p.second-text {
+  font-size: 0.85rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Hover state */
+.cards .card:hover {
+  transform: scale(1.1);
+}
+
+/* Blur non-hovered siblings */
+.cards:hover > .card:not(:hover) {
+  filter: blur(5px);
+  transform: scale(0.9);
+}

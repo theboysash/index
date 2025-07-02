@@ -1,0 +1,14 @@
+.vertical-card {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  color: #1a1a1a; /* <--- force dark text */
+  transition: transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.vertical-card:hover {
+  background-color: #fce4ec;
+  transform: scale(1.02);
+}

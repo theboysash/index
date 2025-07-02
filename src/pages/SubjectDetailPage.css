@@ -1,0 +1,75 @@
+/* Layout for subject detail */
+.subject-page {
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  max-width: 800px;
+  margin: auto;
+}
+
+/* Subject Title */
+.subject-page h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Topic Blocks */
+.topic-card {
+  background: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.topic-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+/* Concept and Resource Titles */
+.concept-title {
+  margin-left: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.resource-item {
+  margin-left: 2rem;
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 0.5rem;
+}
+
+/* Forms */
+.add-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.add-form input {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 200px;
+}
+
+.add-form button {
+  background-color: #ff6868;
+  color: white;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-form button:hover {
+  background-color: #ff4d4d;
+}

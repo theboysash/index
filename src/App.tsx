@@ -5,6 +5,7 @@ import OnceOffPage from "./pages/OnceOffPage";
 import ChorePage from "./pages/ChorePage";
 import HabitPage from "./pages/HabitPage";
 import StudyPage from "./pages/StudyPage";
+import SubjectDetailPage from "./pages/SubjectDetailPage";
 
 
 
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/chore" element={<ChorePage/>}/>
         <Route path="/habit" element={<HabitPage/>}/>
         <Route path="/study" element={<StudyPage/>}/>
+        <Route path="/study/:subjectId" element={<SubjectDetailPage />} />
       </Routes>
     </BrowserRouter>
   );

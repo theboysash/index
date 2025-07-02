@@ -1,8 +1,8 @@
-// src/pages/ChorePage.tsx
 import React, { useState } from 'react';
 import { useTasks } from '../hooks/useTasks';
 import type { Chore } from '../domain/Task';
 import '../styles/forms.css';
+import '../styles/Table.css';
 
 export default function ChorePage() {
   const { tasks: chores, create, update, remove } = useTasks<Chore>('chore');
@@ -29,7 +29,6 @@ export default function ChorePage() {
       effortLevel: effort,
       description,
     });
-    // reset form
     setTitle('');
     setImportance(3);
     setInterval('daily');
@@ -42,6 +41,41 @@ export default function ChorePage() {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Chores</h1>
+
+      
+
+      {/* Table of chores */}
+      <table className="task-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Frequency</th>
+            <th>Interval</th>
+            <th>Duration</th>
+            <th>Effort</th>
+            <th>Importance</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {chores.map((c) => (
+            <tr key={c.id}>
+              <td>{c.title}</td>
+              <td>{c.description}</td>
+              <td>{c.frequency}</td>
+              <td>{c.interval}</td>
+              <td>{c.durationHours}h</td>
+              <td>{c.effortLevel}</td>
+              <td>{c.importance}★</td>
+              <td className="actions-cell">
+                <button onClick={() => update(c.id, { title: c.title + ' ✏️' })}>Edit</button>
+                <button onClick={() => remove(c.id)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       <form className="colorful-form" onSubmit={handleAdd}>
         <div className="form-group">
@@ -123,29 +157,6 @@ export default function ChorePage() {
 
         <button type="submit" className="form-button">Add Chore</button>
       </form>
-
-      {/* Live list of chores */}
-      <ul className="mt-6 space-y-2">
-        {chores.map(c => (
-          <li key={c.id} className="border p-2 rounded flex justify-between items-start">
-            <div>
-              <h3 className="font-semibold">{c.title}</h3>
-              {c.description && <p className="text-sm">{c.description}</p>}
-              <p className="text-xs text-gray-500">
-                {c.frequency}× {c.interval}, {c.durationHours}h, effort {c.effortLevel}, imp {c.importance}
-              </p>
-            </div>
-            <div className="flex flex-col gap-1">
-              <button onClick={() => update(c.id, { title: c.title + ' ✏️' })} className="text-blue-600 text-sm">
-                Edit
-              </button>
-              <button onClick={() => remove(c.id)} className="text-red-600 text-sm">
-                Delete
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }

@@ -1,6 +1,7 @@
+
 import type { Concept } from '../domain/Concept';
 import { useResources } from '../hooks/useResources';
-import AddNodeForm from './AddNodeForm';
+import AddResourceForm from './AddResourceForm';
 import type { Resource } from '../domain/Resource';
 
 export default function ConceptNode({ concept }: { concept: Concept }) {
@@ -8,11 +9,17 @@ export default function ConceptNode({ concept }: { concept: Concept }) {
 
   return (
     <div style={{ marginLeft: 20 }}>
-      <h5>{concept.title}</h5>
+      <h5 className="font-semibold mb-2">{concept.title}</h5>
+
+      {/* Inline list of existing resources */}
       {resources.map((r: Resource) => (
-        <div key={r.id}>{r.title || r.type}</div>
+        <div key={r.id} className="mb-1">
+          {r.title}
+        </div>
       ))}
-      <AddNodeForm nodeType="definition" parentId={concept.id} onAdd={(d) => addRes(d as any)} />
+
+      {/* Add any type of resource */}
+      <AddResourceForm conceptId={concept.id} onAdd={addRes} />
     </div>
   );
 }

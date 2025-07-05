@@ -6,8 +6,7 @@ import ChorePage from "./pages/ChorePage";
 import HabitPage from "./pages/HabitPage";
 import StudyPage from "./pages/StudyPage";
 import SubjectDetailPage from "./pages/SubjectDetailPage";
-
-
+import ConceptDetailPage from "./pages/ConceptDetailPage"; // ✅ Add this line
 
 export default function App() {
   return (
@@ -15,12 +14,12 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/once-off" element={<OnceOffPage />} />
-        <Route path="/chore" element={<ChorePage/>}/>
-        <Route path="/habit" element={<HabitPage/>}/>
-        <Route path="/study" element={<StudyPage/>}/>
+        <Route path="/chore" element={<ChorePage />} />
+        <Route path="/habit" element={<HabitPage />} />
+        <Route path="/study" element={<StudyPage />} />
         <Route path="/study/:subjectId" element={<SubjectDetailPage />} />
+        <Route path="/study/:subjectId/:conceptId" element={<ConceptDetailPage />} /> {/* ✅ Add route for concept details */}
       </Routes>
     </BrowserRouter>
   );
 }
-

@@ -1,18 +1,18 @@
+// src/domain/Resource.ts
+
 export type ResourceType =
-  | 'definition'
-  | 'theorem'
-  | 'general'
-  | 'exercise'
-  | 'tutorial'
-  | 'past-test';
+  | 'reference'
+  | 'worked-example'
+  | 'practice'
+  | 'key-insight';
 
 export interface Resource {
   id: string;
   conceptId: string;
   type: ResourceType;
-  title?: string;
-  body?: string;
-  notes?: string;
-  mastery?: number;
+  title: string;
+  body?: string;                  // the main content (definition, exercise text…)
+  difficulty?: 1 | 2 | 3;         // optional, for Practice or Examples
+  tags?: string[];                // e.g. ['separation-axioms']
   lastReviewedAt?: Date;
 }

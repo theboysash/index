@@ -51,6 +51,14 @@
   transition: background-color 0.2s, border-color 0.2s;
 }
 
+/* Truncate the notes column */
+.notes-cell {
+  max-width: 200px;           /* or whatever fits */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .task-table .actions-cell button:hover {
   background-color: #e6f0ff;
   border-color: #cce4ff;

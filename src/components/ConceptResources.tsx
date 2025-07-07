@@ -1,4 +1,3 @@
-
 import type { Resource } from '../domain/Resource';
 import AddResourceForm from './AddResourceForm';
 import '../styles/Table.css';
@@ -27,7 +26,9 @@ export default function ConceptResources({
           <tr>
             <th>Type</th>
             <th>Title</th>
+            <th>Importance</th>
             <th>Difficulty</th>
+            <th>Notes</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -36,7 +37,13 @@ export default function ConceptResources({
             <tr key={r.id}>
               <td>{r.type.replace('-', ' ')}</td>
               <td>{r.title}</td>
+              <td>{r.importance ?? '—'}</td>
               <td>{r.difficulty ?? '—'}</td>
+              <td className="notes-cell">
+                {r.notes && r.notes.length > 30
+                  ? r.notes.slice(0, 20) + '…'
+                  : r.notes || '—'}
+              </td>
               <td className="actions-cell">
                 <button onClick={() => update(r.id, { title: r.title + ' ✏️' })}>
                   Edit

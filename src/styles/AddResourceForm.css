@@ -1,0 +1,62 @@
+.arf-form {
+  width: 100%;
+}
+
+/* Row 1: inputs side-by-side */
+.arf-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+/* Row 2: notes textarea */
+.arf-row-notes {
+  margin-bottom: 0.5rem;
+}
+
+/* Row 3: submit button */
+.arf-row-submit {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+
+/* Shared input styles */
+.arf-input {
+  font-size: 0.95rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Select and textarea adjustments */
+.arf-select {
+  min-width: 120px;
+}
+.arf-title {
+  flex-grow: 1;
+  min-width: 150px;
+}
+.arf-small {
+  width: 120px;
+}
+.arf-notes {
+  width: 100%;
+  resize: vertical;
+}
+
+/* Button styling */
+.arf-button {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.arf-button:hover {
+  background-color: #ff8787;
+}

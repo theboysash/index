@@ -1,25 +1,22 @@
-
+// src/components/ConceptNode.tsx
+ 
 import type { Concept } from '../domain/Concept';
 import { useResources } from '../hooks/useResources';
-import AddResourceForm from './AddResourceForm';
-import type { Resource } from '../domain/Resource';
+import ConceptResources from './ConceptResources';
 
 export default function ConceptNode({ concept }: { concept: Concept }) {
-  const { items: resources, add: addRes } = useResources(concept.id);
+  const { items: resources, add, update, remove } = useResources(concept.id);
 
   return (
-    <div style={{ marginLeft: 20 }}>
-      <h5 className="font-semibold mb-2">{concept.title}</h5>
-
-      {/* Inline list of existing resources */}
-      {resources.map((r: Resource) => (
-        <div key={r.id} className="mb-1">
-          {r.title}
-        </div>
-      ))}
-
-      {/* Add any type of resource */}
-      <AddResourceForm conceptId={concept.id} onAdd={addRes} />
+    <div style={{ marginLeft: 20, marginBottom: 40 }}>
+      <h5 className="font-semibold text-lg mb-4">{concept.title}</h5>
+      <ConceptResources
+        conceptId={concept.id}
+        resources={resources}
+        add={add}
+        update={update}
+        remove={remove}
+      />
     </div>
   );
 }

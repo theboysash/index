@@ -11,4 +11,6 @@ export interface Concept {
   notes?: string;
   mastery?: number;
   lastReviewedAt?: Date;
+  testDate?: Date; 
+
 }

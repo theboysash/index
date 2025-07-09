@@ -43,7 +43,7 @@ function fromFirestore<T>(snap: any): T & { id: string } {
 export class FirestoreTaskRepo implements TaskRepository {
   private col = collection(db, 'tasks');
 
-  async create<T>(data: any): Promise<string> {
+  async create(data: any): Promise<string> {
     const now = new Date();
     const payload = toFirestore({ ...data, createdAt: now, updatedAt: now });
     const ref = await addDoc(this.col, payload);
@@ -59,7 +59,7 @@ export class FirestoreTaskRepo implements TaskRepository {
     return unsub;
   }
 
-  async update<T>(id: string, data: any): Promise<void> {
+  async update(id: string, data: any): Promise<void> {
     const ref = doc(this.col, id);
     await updateDoc(ref, toFirestore({ ...data, updatedAt: new Date() }));
   }

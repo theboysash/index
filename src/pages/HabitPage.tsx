@@ -3,6 +3,7 @@ import { useTasks } from '../hooks/useTasks';
 import type { HabitTask } from '../domain/Task';
 import '../styles/forms.css';
 import '../styles/Table.css';
+import { EditableCell } from '../components/EditableTable';
 
 const habitTags: HabitTask['habitTag'][] = ['Forming', 'Building', 'Established'];
 
@@ -12,7 +13,6 @@ export default function HabitPage() {
   const [title, setTitle] = useState('');
   const [importance, setImportance] = useState<1 | 2 | 3 | 4 | 5>(3);
   const [interval, setInterval] = useState<'daily' | 'weekly' | 'monthly'>('daily');
-  const [frequency, setFrequency] = useState<number>(1);
   const [duration, setDuration] = useState<number>(1);
   const [frequencyTarget, setFrequencyTarget] = useState<number>(3);
   const [familiarity, setFamiliarity] = useState<0 | 1 | 2 | 3 | 4 | 5>(0);
@@ -22,23 +22,23 @@ export default function HabitPage() {
     e.preventDefault();
     if (!title) return;
     await create({
-      userId: 'test-user',
-      category: 'habit',
-      title,
-      importance,
-      interval,
-      frequency,
-      durationHours: duration,
-      frequencyTarget,
-      consistencyIndex: 0,
-      familiarity,
-      habitTag: habitTags[familiarity],
-      description,
-    });
+  userId: 'test-user',
+  category: 'habit',
+  title,
+  importance,
+  interval,
+  durationHours: duration,
+  frequencyTarget,
+  consistencyIndex: 0,
+  familiarity,
+  habitTag: habitTags[familiarity],
+  description,
+  frequency: 0
+});
+
     setTitle('');
     setImportance(3);
     setInterval('daily');
-    setFrequency(1);
     setDuration(1);
     setFrequencyTarget(3);
     setFamiliarity(0);
@@ -49,16 +49,12 @@ export default function HabitPage() {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Habits</h1>
 
-      
-
-      {/* Live list of habits as a table */}
       <table className="task-table mt-6">
         <thead>
           <tr>
             <th>Title</th>
             <th>Description</th>
             <th>Interval</th>
-            <th>Freq</th>
             <th>Target</th>
             <th>Duration (h)</th>
             <th>Importance</th>
@@ -70,19 +66,43 @@ export default function HabitPage() {
         <tbody>
           {habits.map((h) => (
             <tr key={h.id}>
-              <td>{h.title}</td>
-              <td>{h.description || '—'}</td>
-              <td>{h.interval}</td>
-              <td>{h.frequency}</td>
-              <td>{h.frequencyTarget}</td>
-              <td>{h.durationHours}</td>
-              <td>{h.importance}★</td>
-              <td>{h.familiarity}</td>
-              <td>{h.habitTag}</td>
+              <EditableCell value={h.title} onChange={(v) => update(h.id, { title: v })} />
+              <EditableCell value={h.description || ''} onChange={(v) => update(h.id, { description: v })} />
+              <EditableCell
+                value={h.interval}
+                type="select"
+                options={['daily', 'weekly', 'monthly']}
+                onChange={(v) => update(h.id, { interval: v as any })}
+              />
+              <EditableCell
+                value={h.frequencyTarget}
+                type="number"
+                onChange={(v) => update(h.id, { frequencyTarget: Number(v) })}
+              />
+              <EditableCell
+                value={h.durationHours}
+                type="number"
+                onChange={(v) => update(h.id, { durationHours: Number(v) })}
+              />
+              <EditableCell
+                value={h.importance}
+                type="select"
+                options={['1', '2', '3', '4', '5']}
+                onChange={(v) => update(h.id, { importance: Number(v) as 1 | 2 | 3 | 4 | 5 })}
+              />
+              <EditableCell
+                value={h.familiarity}
+                type="select"
+                options={['0', '1', '2', '3', '4', '5']}
+                onChange={(v) => update(h.id, { familiarity: Number(v) as 0 | 1 | 2 | 3 | 4 | 5 })}
+              />
+              <EditableCell
+                value={h.habitTag}
+                type="select"
+                options={habitTags}
+                onChange={(v) => update(h.id, { habitTag: v as HabitTask['habitTag'] })}
+              />
               <td className="actions-cell">
-                <button onClick={() => update(h.id, { title: h.title + ' ✏️' })}>
-                  Edit
-                </button>
                 <button onClick={() => remove(h.id)}>Delete</button>
               </td>
             </tr>
@@ -90,7 +110,7 @@ export default function HabitPage() {
         </tbody>
       </table>
 
-      <form className="colorful-form" onSubmit={handleAdd}>
+      <form className="colorful-form mt-10" onSubmit={handleAdd}>
         <div className="form-group">
           <label className="form-label">Title</label>
           <input
@@ -100,22 +120,14 @@ export default function HabitPage() {
             required
           />
         </div>
-
         <div className="form-group">
-          <label className="form-label">Importance</label>
-          <select
+          <label className="form-label">Description</label>
+          <input
             className="form-input"
-            value={importance}
-            onChange={(e) => setImportance(+e.target.value as any)}
-          >
-            {[1, 2, 3, 4, 5].map((n) => (
-              <option key={n} value={n}>
-                {n}★
-              </option>
-            ))}
-          </select>
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
         </div>
-
         <div className="form-group">
           <label className="form-label">Interval</label>
           <select
@@ -128,67 +140,49 @@ export default function HabitPage() {
             <option value="monthly">Monthly</option>
           </select>
         </div>
-
         <div className="form-group">
-          <label className="form-label">Frequency</label>
+          <label className="form-label">Target Frequency</label>
           <input
             type="number"
-            min={1}
             className="form-input"
-            value={frequency}
-            onChange={(e) => setFrequency(+e.target.value)}
+            value={frequencyTarget}
+            onChange={(e) => setFrequencyTarget(Number(e.target.value))}
           />
         </div>
-
         <div className="form-group">
-          <label className="form-label">Duration (hrs)</label>
+          <label className="form-label">Duration (h)</label>
           <input
             type="number"
-            min={0.25}
-            step={0.25}
             className="form-input"
             value={duration}
-            onChange={(e) => setDuration(+e.target.value)}
+            onChange={(e) => setDuration(Number(e.target.value))}
           />
         </div>
-
+        <div className="form-group">
+          <label className="form-label">Importance</label>
+          <select
+            className="form-input"
+            value={importance}
+            onChange={(e) => setImportance(Number(e.target.value) as 1 | 2 | 3 | 4 | 5)}
+          >
+            {[1, 2, 3, 4, 5].map((n) => (
+              <option key={n} value={n}>{n}</option>
+            ))}
+          </select>
+        </div>
         <div className="form-group">
           <label className="form-label">Familiarity</label>
           <select
             className="form-input"
             value={familiarity}
-            onChange={(e) => setFamiliarity(+e.target.value as any)}
+            onChange={(e) => setFamiliarity(Number(e.target.value) as 0 | 1 | 2 | 3 | 4 | 5)}
           >
             {[0, 1, 2, 3, 4, 5].map((n) => (
-              <option key={n} value={n}>
-                {n}
-              </option>
+              <option key={n} value={n}>{n}</option>
             ))}
           </select>
         </div>
-
-        <div className="form-group">
-          <label className="form-label">Freq. Target</label>
-          <input
-            type="number"
-            min={1}
-            className="form-input"
-            value={frequencyTarget}
-            onChange={(e) => setFrequencyTarget(+e.target.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">Description</label>
-          <textarea
-            className="form-input"
-            rows={2}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-
-        <button type="submit" className="form-button">Add Habit</button>
+        <button className="form-button mt-4" type="submit">Add Habit</button>
       </form>
     </div>
   );

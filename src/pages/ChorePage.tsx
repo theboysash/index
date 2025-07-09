@@ -3,6 +3,8 @@ import { useTasks } from '../hooks/useTasks';
 import type { Chore } from '../domain/Task';
 import '../styles/forms.css';
 import '../styles/Table.css';
+import { EditableCell } from '../components/EditableTable';
+
 
 export default function ChorePage() {
   const { tasks: chores, create, update, remove } = useTasks<Chore>('chore');
@@ -61,18 +63,40 @@ export default function ChorePage() {
         <tbody>
           {chores.map((c) => (
             <tr key={c.id}>
-              <td>{c.title}</td>
-              <td>{c.description}</td>
-              <td>{c.frequency}</td>
-              <td>{c.interval}</td>
-              <td>{c.durationHours}h</td>
-              <td>{c.effortLevel}</td>
-              <td>{c.importance}★</td>
-              <td className="actions-cell">
-                <button onClick={() => update(c.id, { title: c.title + ' ✏️' })}>Edit</button>
-                <button onClick={() => remove(c.id)}>Delete</button>
-              </td>
-            </tr>
+  <EditableCell value={c.title} onChange={(v) => update(c.id, { title: v })} />
+  <EditableCell value={c.description || ''} onChange={(v) => update(c.id, { description: v })} />
+  <EditableCell
+    value={c.frequency}
+    type="number"
+    onChange={(v) => update(c.id, { frequency: Number(v) })}
+  />
+  <EditableCell
+    value={c.interval}
+    type="select"
+    options={['daily', 'weekly', 'monthly']}
+    onChange={(v) => update(c.id, { interval: v as any })}
+  />
+  <EditableCell
+    value={c.durationHours}
+    type="number"
+    onChange={(v) => update(c.id, { durationHours: Number(v) })}
+  />
+  <EditableCell
+  value={c.frequency ?? ''} // ✅ fallback to empty string
+  onChange={(val) => update(c.id, { frequency: Number(val) })}
+/>
+
+  <EditableCell
+    value={c.importance}
+    type="select"
+    options={['1', '2', '3', '4', '5']}
+    onChange={(v) => update(c.id, { importance: Number(v) as 1 | 2 | 3 | 4 | 5 })}
+  />
+  <td className="actions-cell">
+    <button onClick={() => remove(c.id)}>Delete</button>
+  </td>
+</tr>
+
           ))}
         </tbody>
       </table>

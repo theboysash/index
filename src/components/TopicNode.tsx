@@ -1,4 +1,6 @@
+// src/components/TopicNode.tsx
 
+import { useState } from 'react';
 import type { Topic } from '../domain/Topic';
 import useConcepts from '../hooks/useConcept';
 import AddNodeForm from './AddNodeForm';
@@ -6,26 +8,31 @@ import ConceptNode from './ConceptNode';
 import useTopics from '../hooks/useTopic';
 
 export default function TopicNode({ topic }: { topic: Topic }) {
-  // ✅ THIS IS THE KEY FIX:
-  const { items: subTopics, add: addSub } = useTopics(topic.id); // ← topic.id is the parentTopicId
+  const [expanded, setExpanded] = useState(false); // 🔻 start collapsed
+  const { items: subTopics, add: addSub } = useTopics(topic.id);
   const { items: concepts, add: addConc } = useConcepts(topic.id);
 
   return (
-    <div style={{ marginLeft: 20 }}>
-      <h4>{topic.name}</h4>
+    <div style={{ marginLeft: 20, marginBottom: 30 }}>
+      <div className="topic-header" onClick={() => setExpanded(prev => !prev)}>
+        <h4 className="topic-title">{topic.name}</h4>
+        <span style={{ cursor: 'pointer' }}>{expanded ? '▲' : '▼'}</span>
+      </div>
 
-      {/* Render child topics recursively */}
-      {subTopics.map((st) => (
-        <TopicNode key={st.id} topic={st} />
-      ))}
+      {expanded && (
+        <div className="topic-content">
+          {subTopics.map(st => (
+            <TopicNode key={st.id} topic={st} />
+          ))}
 
-      {/* Render concepts */}
-      {concepts.map((c) => (
-        <ConceptNode key={c.id} concept={c} />
-      ))}
+          {concepts.map(c => (
+            <ConceptNode key={c.id} concept={c} />
+          ))}
 
-      <AddNodeForm nodeType="topic" parentId={topic.id} onAdd={(d) => addSub(d as any)} />
-      <AddNodeForm nodeType="concept" parentId={topic.id} onAdd={(d) => addConc(d as any)} />
+          <AddNodeForm nodeType="topic" parentId={topic.id} onAdd={(d) => addSub(d as any)} />
+          <AddNodeForm nodeType="concept" parentId={topic.id} onAdd={(d) => addConc(d as any)} />
+        </div>
+      )}
     </div>
   );
 }

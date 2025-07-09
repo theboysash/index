@@ -1,8 +1,11 @@
+// src/pages/OnceOffPage.tsx
+
 import React, { useState } from 'react';
 import { useTasks } from '../hooks/useTasks';
 import type { OnceOffTask } from '../domain/Task';
 import '../styles/forms.css';
 import '../styles/Table.css';
+import { EditableCell } from '../components/EditableTable';
 
 export default function OnceOffPage() {
   const { tasks, create, update, remove } = useTasks<OnceOffTask>('once-off');
@@ -39,9 +42,6 @@ export default function OnceOffPage() {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Once-off Tasks</h1>
 
-      
-
-      {/* --- live list below --- */}
       <table className="task-table mt-6">
         <thead>
           <tr>
@@ -57,22 +57,31 @@ export default function OnceOffPage() {
         <tbody>
           {tasks.map((t) => (
             <tr key={t.id}>
-              <td>{t.title}</td>
-              <td>{t.description || '—'}</td>
-              <td>{t.dueDate.toLocaleDateString()}</td>
-              <td>{t.importance}★</td>
-              <td>{t.durationHours}</td>
-              <td>
-                {t.effortLevel === 1
-                  ? 'Light'
-                  : t.effortLevel === 2
-                  ? 'Medium'
-                  : 'Heavy'}
-              </td>
+              <EditableCell value={t.title} onChange={(v) => update(t.id, { title: v })} />
+              <EditableCell value={t.description || ''} onChange={(v) => update(t.id, { description: v })} />
+              <EditableCell
+                value={t.dueDate.toISOString().slice(0, 10)}
+                type="text"
+                onChange={(v) => update(t.id, { dueDate: new Date(v) })}
+              />
+              <EditableCell
+                value={t.importance}
+                type="select"
+                options={['1', '2', '3', '4', '5']}
+                onChange={(v) => update(t.id, { importance: Number(v) as 1 | 2 | 3 | 4 | 5 })}
+              />
+              <EditableCell
+                value={t.durationHours ?? 0}
+                type="number"
+                onChange={(v) => update(t.id, { durationHours: Number(v) })}
+              />
+              <EditableCell
+                value={t.effortLevel ?? 1}
+                type="select"
+                options={['1', '2', '3']}
+                onChange={(v) => update(t.id, { effortLevel: Number(v) as 1 | 2 | 3 })}
+              />
               <td className="actions-cell">
-                <button onClick={() => update(t.id, { title: t.title + ' ✏️' })}>
-                  Edit
-                </button>
                 <button onClick={() => remove(t.id)}>Delete</button>
               </td>
             </tr>
@@ -80,75 +89,59 @@ export default function OnceOffPage() {
         </tbody>
       </table>
 
-      <form className="colorful-form" onSubmit={handleAdd}>
+      <form className="colorful-form mt-10" onSubmit={handleAdd}>
         <div className="form-group">
           <label className="form-label">Title</label>
-          <input
-            className="form-input"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
+          <input className="form-input" value={title} onChange={(e) => setTitle(e.target.value)} required />
         </div>
+
+        <div className="form-group">
+          <label className="form-label">Description</label>
+          <input className="form-input" value={description} onChange={(e) => setDesc(e.target.value)} />
+        </div>
+
         <div className="form-group">
           <label className="form-label">Due Date</label>
-          <input
-            type="date"
-            className="form-input"
-            value={due}
-            onChange={(e) => setDue(e.target.value)}
-            required
-          />
+          <input className="form-input" type="date" value={due} onChange={(e) => setDue(e.target.value)} required />
         </div>
+
         <div className="form-group">
-          <label className="form-label">Importance</label>
-          <select
-            className="form-input"
-            value={importance}
-            onChange={(e) => setImp(+e.target.value as any)}
-          >
+          <label className="form-label">Importance (1-5)</label>
+          <select className="form-input" value={importance} onChange={(e) => setImp(Number(e.target.value) as any)}>
             {[1, 2, 3, 4, 5].map((n) => (
               <option key={n} value={n}>
-                {n}★
+                {n}
               </option>
             ))}
           </select>
         </div>
+
         <div className="form-group">
-          <label className="form-label">Duration (hrs)</label>
+          <label className="form-label">Duration (hours)</label>
           <input
-            type="number"
-            min={0.25}
-            step={0.25}
             className="form-input"
+            type="number"
+            min={0}
+            step={0.1}
             value={duration}
-            onChange={(e) => setDur(+e.target.value)}
+            onChange={(e) => setDur(Number(e.target.value))}
           />
         </div>
+
         <div className="form-group">
           <label className="form-label">Effort</label>
           <select
             className="form-input"
             value={effort}
-            onChange={(e) => setEffort(+e.target.value as any)}
+            onChange={(e) => setEffort(Number(e.target.value) as 1 | 2 | 3)}
           >
             <option value={1}>Light</option>
             <option value={2}>Medium</option>
             <option value={3}>Heavy</option>
           </select>
         </div>
-        <div className="form-group">
-          <label className="form-label">Description</label>
-          <textarea
-            className="form-input"
-            rows={3}
-            value={description}
-            onChange={(e) => setDesc(e.target.value)}
-          />
-        </div>
-        <button type="submit" className="form-button">
-          Add Task
-        </button>
+
+        <button className="form-button mt-4" type="submit">Add Task</button>
       </form>
     </div>
   );

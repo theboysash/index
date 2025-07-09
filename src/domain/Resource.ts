@@ -1,5 +1,3 @@
-// src/domain/Resource.ts
-
 export type ResourceType =
   | 'reference'
   | 'worked-example'
@@ -7,16 +5,14 @@ export type ResourceType =
   | 'key-insight';
 
 export interface Resource {
-  notes: string;
   id: string;
   conceptId: string;
   type: ResourceType;
   title: string;
-  body?: string;                  // the main content (definition, exercise text…)
-  difficulty?: 1 | 2 | 3;         // optional, for Practice or Examples
-  tags?: string[];                // e.g. ['separation-axioms']
+  notes: string;
+  body?: string;
+  difficulty?: 1 | 2 | 3;
+  importance?: 1 | 2 | 3;
   lastReviewedAt?: Date;
-  importance?: 1 | 2 | 3; // ← Add this line
-
-
+  accuracy?: number; // NEW FIELD
 }

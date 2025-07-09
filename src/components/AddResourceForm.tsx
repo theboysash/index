@@ -25,12 +25,13 @@ export default function AddResourceForm({ conceptId, onAdd }: AddResourceFormPro
     e.preventDefault();
     if (!title.trim()) return;
 
-    const data: any = {
+    const data: Omit<Resource, 'id'> = {
       conceptId,
       type,
       title: title.trim(),
       importance,
       notes: notes.trim(),
+      accuracy: 0, // set default accuracy
     };
 
     if (type === 'practice' || type === 'worked-example') {
@@ -39,7 +40,6 @@ export default function AddResourceForm({ conceptId, onAdd }: AddResourceFormPro
 
     await onAdd(data);
 
-    // Reset form
     setTitle('');
     setNotes('');
     setDifficulty(2);
@@ -48,7 +48,6 @@ export default function AddResourceForm({ conceptId, onAdd }: AddResourceFormPro
 
   return (
     <form onSubmit={handleSubmit} className="add-form">
-
       <div className="form-row">
         <select className="form-input" value={type} onChange={e => setType(e.target.value as ResourceType)}>
           {RESOURCE_OPTIONS.map(o => (
